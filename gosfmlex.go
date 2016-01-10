@@ -1,7 +1,7 @@
 package sfmlex
 
 import (
-	_ "./animations"
-	_ "./shapes"
-	_ "./utils"
+	_ "sfmlex/animations"
+	_ "sfmlex/shapes"
+	_ "sfmlex/utils"
 )
