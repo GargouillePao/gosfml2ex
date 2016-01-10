@@ -1,7 +1,7 @@
 package sfmlex
 
 import (
-	_ "sfmlex/animations"
-	_ "sfmlex/shapes"
-	_ "sfmlex/utils"
+	_ "github.com/GargouillePao/gosfml2ex/animations"
+	_ "github.com/GargouillePao/gosfml2ex/shapes"
+	_ "github.com/GargouillePao/gosfml2ex/utils"
 )
