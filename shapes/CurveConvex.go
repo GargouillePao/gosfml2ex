@@ -94,7 +94,7 @@ func (c *CurveConvexShape) PointToCurve(index int) {
 func (c *CurveConvexShape) toCurve(index int, ctrlPoints []sf.Vector2f) {
 	for j := 0; j < c.step; j++ {
 		t := float32(j) / float32(c.step)
-		c.ConvexShape.SetPoint(uint(index*c.step+j), sfUtil.Graphics.BCurve(ctrlPoints, t, c.curves))
+		c.ConvexShape.SetPoint(uint(index*c.step+j), sfUtil.Graphics.BCurve(ctrlPoints, t))
 	}
 }
 func (c *CurveConvexShape) smoothCurve(index int) {

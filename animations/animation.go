@@ -46,7 +46,6 @@ func (a *Animation) Animate() {
 		if a.clip != nil {
 			a.clip.Animate()
 		}
-
 	}
 }
 func (a *Animation) Play() {

@@ -8,9 +8,10 @@ import (
 type graphicsUtil struct {
 }
 
-func (g graphicsUtil) BCurve(points []sf.Vector2f, t float32, n int) (point sf.Vector2f) {
+func (g graphicsUtil) BCurve(ctrlPoints []sf.Vector2f, t float32) (point sf.Vector2f) {
 	point.X = 0
 	point.Y = 0
+	n := len(ctrlPoints)
 	for i := 0; i < n; i++ {
 		var changeOut float32
 		for j := 0; j < n-i; j++ {
@@ -23,8 +24,34 @@ func (g graphicsUtil) BCurve(points []sf.Vector2f, t float32, n int) (point sf.V
 				changeOut += changeIn
 			}
 		}
-		point.X += points[i].X * changeOut
-		point.Y += points[i].Y * changeOut
+		point.X += ctrlPoints[i].X * changeOut
+		point.Y += ctrlPoints[i].Y * changeOut
+	}
+	return
+}
+func (g *graphicsUtil) BezierCurve(ctrlPoints []sf.Vector2f, t float32) (point sf.Vector2f) {
+	n := len(ctrlPoints)
+	switch n {
+	case 0:
+	case 3:
+		a := (1 - t) * (1 - t)
+		b := (1 - t) * t * 2
+		c := t * t
+		point = sf.Vector2f{
+			a*ctrlPoints[0].X + b*ctrlPoints[1].X + c*ctrlPoints[2].X,
+			a*ctrlPoints[0].Y + b*ctrlPoints[1].Y + c*ctrlPoints[2].Y,
+		}
+	case 4:
+		a := (1 - t) * (1 - t) * (1 - t)
+		b := (1 - t) * (1 - t) * t * 3
+		c := t * t * (1 - t) * 3
+		d := t * t * t
+		point = sf.Vector2f{
+			a*ctrlPoints[0].X + b*ctrlPoints[1].X + c*ctrlPoints[2].X + d*ctrlPoints[3].X,
+			a*ctrlPoints[0].Y + b*ctrlPoints[1].Y + c*ctrlPoints[2].Y + d*ctrlPoints[3].Y,
+		}
+	default:
+		point = ctrlPoints[0]
 	}
 	return
 }
