@@ -2,8 +2,8 @@ package shapes
 
 import (
 	sf "bitbucket.org/krepa098/gosfml2"
+	sfutils "github.com/GargouillePao/gosfml2ex/utils"
 	"math"
-	sfutils "sfmlex/utils"
 )
 
 var sfUtil = sfutils.Utils()

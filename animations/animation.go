@@ -3,7 +3,7 @@ package animations
 import (
 	//sf "bitbucket.org/krepa098/gosfml2"
 	"fmt"
-	sfutils "sfmlex/utils"
+	sfutils "github.com/GargouillePao/gosfml2ex/utils"
 	"time"
 )
 
