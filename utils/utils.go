@@ -8,6 +8,7 @@ type util struct {
 	Math     mathUtil
 	Vector   vectorUtil
 	Graphics graphicsUtil
+	Slice    sliceUtil
 }
 
 func Utils() util {
@@ -15,6 +16,7 @@ func Utils() util {
 		Math:     mathUtil{},
 		Vector:   vectorUtil{},
 		Graphics: graphicsUtil{},
+		Slice:    sliceUtil{},
 	}
 }
 
@@ -34,10 +36,14 @@ func Errors() errors {
 	}
 }
 
-type ErrorUtil struct {
+type errorUtil struct {
 	err string
 }
 
-func (u ErrorUtil) Error() string {
+func NewError(err string) errorUtil {
+	return errorUtil{err: err}
+}
+
+func (u errorUtil) Error() string {
 	return fmt.Sprintf("Chatch error:%s", u.err)
 }

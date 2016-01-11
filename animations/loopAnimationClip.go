@@ -12,7 +12,8 @@ type loopAnimationClip struct {
 	loopType  int
 }
 
-func NewLoopAnimation(start interface{}, end interface{}, loopCount int, loopType int, onAnimateFunc func(interface{}), onEndFunc func()) AnimationClip {
+func NewLoopAnimation(start []float32, end []float32, loopCount int, loopType int, onAnimateFunc OnAnimateFunc, onEndFunc AnimateEndFunc) AnimationClip {
+	Slice.Equilongf(&start, &end)
 	animationClip := animationClip{
 		startState:   start,
 		endState:     end,

@@ -109,12 +109,12 @@ func (v vectorUtil) LerpV3(point1 interface{}, point2 interface{}, lerp float32)
 	var ok bool
 	value1, ok = point1.(sf.Vector3f)
 	if !ok {
-		err = ErrorUtil{err: Errors().CannotMius}
+		err = NewError(Errors().CannotMius)
 		return
 	}
 	value2, ok = point2.(sf.Vector3f)
 	if !ok {
-		err = ErrorUtil{err: Errors().NotTheSameType}
+		err = NewError(Errors().NotTheSameType)
 		return
 	}
 	output = sf.Vector3f{
@@ -131,12 +131,12 @@ func (v vectorUtil) LerpV4(point1 interface{}, point2 interface{}, lerp float32)
 	var ok bool
 	value1, ok = point1.(sf.Color)
 	if !ok {
-		err = ErrorUtil{err: Errors().CannotMius}
+		err = NewError(Errors().CannotMius)
 		return
 	}
 	value2, ok = point2.(sf.Color)
 	if !ok {
-		err = ErrorUtil{err: Errors().NotTheSameType}
+		err = NewError(Errors().NotTheSameType)
 		return
 	}
 	output = sf.Color{
@@ -154,10 +154,46 @@ func lerpV1UInt8(value1 uint8, value2 uint8, lerp float32) uint8 {
 func lerpV1(value1 float32, value2 float32, lerp float32) float32 {
 	return value1*(1-lerp) + value2*lerp
 }
+func (v vectorUtil) LerpV2f(point1 sf.Vector2f, point2 sf.Vector2f, lerp float32) (output sf.Vector2f) {
+	output = sf.Vector2f{
+		X: lerpV1(point1.X, point2.X, lerp),
+		Y: lerpV1(point1.Y, point2.Y, lerp),
+	}
+	return
+}
+
+func isV1(value interface{}) bool {
+	if _, err := toFloat64(value); err != nil {
+		return false
+	}
+	return true
+}
+func isV2(value interface{}) bool {
+	if _, err := toVector2f(value); err != nil {
+		return false
+	}
+	return true
+}
+
+func (v *vectorUtil) JudageDimension(value interface{}) uint8 {
+	if isV1(value) {
+		return 1
+	}
+	if isV2(value) {
+		return 2
+	}
+	if _, ok := value.(sf.Vector3f); ok {
+		return 3
+	}
+	if _, ok := value.(sf.Color); ok {
+		return 4
+	}
+	return 0
+}
 
 func toFloat64(point interface{}) (output float64, err error) {
 	if point == nil {
-		err = ErrorUtil{Errors().NilAttribute}
+		err = NewError(Errors().NotTheSameType)
 		return
 	}
 	switch value := point.(type) {
@@ -172,13 +208,13 @@ func toFloat64(point interface{}) (output float64, err error) {
 	case float64:
 		output = value
 	default:
-		err = ErrorUtil{Errors().CannotMius}
+		err = NewError(Errors().CannotMius)
 	}
 	return
 }
 func toVector2f(point interface{}) (output sf.Vector2f, err error) {
 	if point == nil {
-		err = ErrorUtil{Errors().NilAttribute}
+		err = NewError(Errors().NilAttribute)
 		return
 	}
 	switch value := point.(type) {
@@ -189,13 +225,35 @@ func toVector2f(point interface{}) (output sf.Vector2f, err error) {
 	case sf.Vector2u:
 		output = sf.Vector2f{float32(value.X), float32(value.Y)}
 	default:
-		err = ErrorUtil{Errors().CannotMius}
+		err = NewError(Errors().CannotMius)
 	}
 	return
 }
-func (v *vectorUtil) Vector2Zero() sf.Vector2f {
+func (v vectorUtil) Vector2Zero() sf.Vector2f {
 	return sf.Vector2f{0, 0}
 }
-func (v *vectorUtil) Vector3Zero() sf.Vector3f {
+func (v vectorUtil) Vector3Zero() sf.Vector3f {
 	return sf.Vector3f{0, 0, 0}
+}
+func (v vectorUtil) NorV2(vector sf.Vector2f) sf.Vector2f {
+	length := v.NormV2(vector)
+	return sf.Vector2f{X: vector.Y / -length, Y: vector.X / length}
+}
+func (v vectorUtil) DirV2(vector sf.Vector2f) sf.Vector2f {
+	length := v.NormV2(vector)
+	return sf.Vector2f{X: vector.X / length, Y: vector.Y / length}
+}
+func (v vectorUtil) NormV2(vector sf.Vector2f) float32 {
+	length := float32(math.Sqrt(math.Pow(float64(vector.X), 2) + math.Pow(float64(vector.Y), 2)))
+	return length
+}
+func (v vectorUtil) AngleV2(vector1 sf.Vector2f, vector2 sf.Vector2f) float32 {
+	norm1 := v.NormV2(vector1)
+	norm2 := v.NormV2(vector2)
+	t := vector1.X*vector2.X + vector1.Y*vector2.Y
+	if norm1*norm2 != 0 {
+		cos := t / (norm1 * norm2)
+		return 180 * float32(math.Acos(float64(cos))) / math.Pi
+	}
+	return 0
 }

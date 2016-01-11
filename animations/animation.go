@@ -1,13 +1,13 @@
 package animations
 
 import (
-	//sf "bitbucket.org/krepa098/gosfml2"
 	"fmt"
 	sfutils "github.com/GargouillePao/gosfml2ex/utils"
 	"time"
 )
 
 var Vector = sfutils.Utils().Vector
+var Slice = sfutils.Utils().Slice
 
 type Animation struct {
 	clip     AnimationClip
@@ -15,6 +15,10 @@ type Animation struct {
 	start    bool
 	delay    float64
 }
+
+type AnimateCurveFunc func(float32) float32
+type OnAnimateFunc func([]float32)
+type AnimateEndFunc func()
 
 func NewAnimation(delay float64) *Animation {
 	return &Animation{start: false, delay: delay}

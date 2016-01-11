@@ -1,16 +1,12 @@
 package animations
 
-import (
-	sf "bitbucket.org/krepa098/gosfml2"
-)
-
 type AnimationClip interface {
-	SetOnAnimate(listener func(interface{}))
-	SetOnAnimateEnd(listener func())
+	SetOnAnimate(OnAnimateFunc)
+	SetOnAnimateEnd(AnimateEndFunc)
 	Animate()
 	GetNext() AnimationClip
 	SetNext(AnimationClip) AnimationClip
-	SetAnimationCurve(func(float32) float32)
+	SetAnimationCurve(AnimateCurveFunc)
 	SetFrameCount(frame float32)
 }
 
@@ -18,16 +14,17 @@ type animationClip struct {
 	stepX        float32
 	stepY        float32
 	step         float32
-	startState   interface{}
-	endState     interface{}
-	onAnimate    func(interface{})
-	onAnimateEnd func()
-	animateCurve func(float32) float32
+	startState   []float32
+	endState     []float32
+	onAnimate    OnAnimateFunc
+	onAnimateEnd AnimateEndFunc
+	animateCurve AnimateCurveFunc
 	nextClip     AnimationClip
 }
 
-func NewSingleAnimationClip(start interface{}, end interface{}, onAnimateFunc func(interface{}), onEndFunc func()) AnimationClip {
-	return &animationClip{
+func NewAnimationClip(start []float32, end []float32, onAnimateFunc OnAnimateFunc, onEndFunc AnimateEndFunc) AnimationClip {
+	Slice.Equilongf(&start, &end)
+	clip := &animationClip{
 		startState:   start,
 		endState:     end,
 		onAnimate:    onAnimateFunc,
@@ -36,62 +33,25 @@ func NewSingleAnimationClip(start interface{}, end interface{}, onAnimateFunc fu
 			return num
 		},
 	}
-}
-
-func NewMultiAnimationClip(start interface{}, end interface{}, onAnimateFunc func(interface{}), nextClip AnimationClip) AnimationClip {
-	return &animationClip{
-		startState: start,
-		endState:   end,
-		onAnimate:  onAnimateFunc,
-		nextClip:   nextClip,
-		animateCurve: func(num float32) float32 {
-			return num
-		},
-	}
+	return clip
 }
 
 func (a *animationClip) SetFrameCount(frame float32) {
 	a.step = 1 / frame
 }
 
-func (a *animationClip) SetAnimationCurve(curve func(float32) float32) {
+func (a *animationClip) SetAnimationCurve(curve AnimateCurveFunc) {
 	a.animateCurve = curve
 }
 
-func (a *animationClip) SetOnAnimate(listener func(interface{})) {
+func (a *animationClip) SetOnAnimate(listener OnAnimateFunc) {
 	a.onAnimate = listener
 }
-func (a *animationClip) SetOnAnimateEnd(listener func()) {
+func (a *animationClip) SetOnAnimateEnd(listener AnimateEndFunc) {
 	a.onAnimateEnd = listener
 }
-func animate(startState interface{}, endState interface{}, step float32, listener func(interface{})) {
-	var resultV1 float32
-	var resultV2 sf.Vector2f
-	var resultV3 sf.Vector3f
-	var resultColor sf.Color
-	var err error
-
-	resultV1, err = Vector.LerpV1(startState, endState, step)
-	if err == nil {
-		listener(resultV1)
-		return
-	}
-	resultV2, err = Vector.LerpV2(startState, endState, step)
-	if err == nil {
-		listener(resultV2)
-		return
-	}
-
-	resultV3, err = Vector.LerpV3(startState.(sf.Vector3f), endState.(sf.Vector3f), step)
-	if err == nil {
-		listener(resultV3)
-		return
-	}
-	resultColor, err = Vector.LerpV4(startState.(sf.Color), endState.(sf.Color), step)
-	if err == nil {
-		listener(resultColor)
-		return
-	}
+func animate(startState []float32, endState []float32, step float32, listener OnAnimateFunc) {
+	listener(Slice.Lerpf(startState, endState, step))
 }
 func (a *animationClip) Animate() {
 	if a.stepX <= 1 {

@@ -4,7 +4,8 @@ type inverseAnimationClip struct {
 	animationClip
 }
 
-func NewInverseAnimationClip(start interface{}, end interface{}, onAnimateFunc func(interface{}), onEndFunc func()) AnimationClip {
+func NewInverseAnimationClip(start []float32, end []float32, onAnimateFunc OnAnimateFunc, onEndFunc AnimateEndFunc) AnimationClip {
+	Slice.Equilongf(&start, &end)
 	animationClip := animationClip{
 		startState:   start,
 		endState:     end,
@@ -17,7 +18,7 @@ func NewInverseAnimationClip(start interface{}, end interface{}, onAnimateFunc f
 	return &inverseAnimationClip{animationClip}
 }
 
-func (i *inverseAnimationClip) SetAnimationCurve(curve func(float32) float32) {
+func (i *inverseAnimationClip) SetAnimationCurve(curve AnimateCurveFunc) {
 	i.animateCurve = func(num float32) float32 {
 		return curve(1 - num)
 	}

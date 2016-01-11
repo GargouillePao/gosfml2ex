@@ -47,10 +47,12 @@ func (c *CurveConvexShape) GetPoint(index uint) (point sf.Vector2f) {
 }
 func (c *CurveConvexShape) GetNearPointIndex(point sf.Vector2f, maxDistance float32) (index uint, hasPoint bool) {
 	hasPoint = true
-	distance, _ := sfUtil.Vector.DistanceV2(c.ctrlPoints[0].Plus(c.GetPosition()), point)
+	transform := c.GetTransform()
+
+	distance, _ := sfUtil.Vector.DistanceV2(transform.TransformPoint(c.ctrlPoints[0]), point)
 	index = uint(0)
 	for i := 1; i < len(c.ctrlPoints); i++ {
-		dis, _ := sfUtil.Vector.DistanceV2(c.ctrlPoints[i].Plus(c.GetPosition()), point)
+		dis, _ := sfUtil.Vector.DistanceV2(transform.TransformPoint(c.ctrlPoints[i]), point)
 		if distance > dis {
 			distance = dis
 			index = uint(i)
@@ -63,6 +65,10 @@ func (c *CurveConvexShape) GetNearPointIndex(point sf.Vector2f, maxDistance floa
 }
 func (c *CurveConvexShape) MovePoint(index uint, point sf.Vector2f) {
 	c.ctrlPoints[index] = c.ctrlPoints[index].Plus(point)
+	c.PointToCurve(int(index))
+}
+func (c *CurveConvexShape) MovePointTo(index uint, point sf.Vector2f) {
+	c.ctrlPoints[index] = point
 	c.PointToCurve(int(index))
 }
 func (c *CurveConvexShape) ExpendPoint(index uint, expand float32) {
