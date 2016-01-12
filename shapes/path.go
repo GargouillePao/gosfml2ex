@@ -131,7 +131,7 @@ func (p *PathShape) GetVertextNormal(index int) (sf.Vector2f, error) {
 }
 
 func (p *PathShape) GetVertextDirection(index int) (sf.Vector2f, error) {
-	vertex1, err := p.GetVertext(index)
+	vertex1, err := p.GetVertext((index - 1 + p.GetVertexCount()) % p.GetVertexCount())
 	if err != nil {
 		return Vector.Vector2Zero(), err
 	}

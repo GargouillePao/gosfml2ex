@@ -9,7 +9,7 @@ type PathTracker struct {
 	step      float32
 	offset    float32
 	stepCount float32
-	rotateNor bool
+	rotateNor sf.Vector2f
 	transform sf.Transformer
 	path      shapeEX.PathVertexts
 }
@@ -18,8 +18,8 @@ func NewPathTracker(transform sf.Transformer, path shapeEX.PathVertexts) *PathTr
 	maxStep := float32(path.GetVertexCount())
 	return &PathTracker{step: 0, offset: 0, stepCount: maxStep, transform: transform, path: path}
 }
-func (p *PathTracker) SetRoateInNor(r bool) {
-	p.rotateNor = r
+func (p *PathTracker) SetRoateNor(x float32, y float32) {
+	p.rotateNor = sf.Vector2f{x, y}
 }
 func (p *PathTracker) SetStep(step float32) {
 	p.step = step
@@ -37,12 +37,10 @@ func (p *PathTracker) SetStep(step float32) {
 		p.transform.SetPosition(pos)
 	}
 
-	if p.rotateNor {
-		nor, err := p.path.GetVertextNormal(pointIndex)
-		if err != nil {
-			return
-		}
-		angle := Vector.AngleV2(nor, sf.Vector2f{1, 0})
-		p.transform.SetRotation(angle)
+	nor, err := p.path.GetVertextNormal(pointIndex)
+	if err != nil {
+		return
 	}
+	angle := Vector.AngleV2(nor, p.rotateNor)
+	p.transform.SetRotation(angle)
 }

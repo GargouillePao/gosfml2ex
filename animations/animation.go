@@ -1,7 +1,6 @@
 package animations
 
 import (
-	"fmt"
 	sfutils "github.com/GargouillePao/gosfml2ex/utils"
 	"time"
 )
@@ -33,7 +32,6 @@ func (a *Animation) AddClip(clip AnimationClip) {
 			if a.clip.GetNext() == nil {
 				a.clip.SetNext(clip)
 				a.clip = a.clipHead
-				fmt.Println(a.clip)
 				return
 			} else {
 				a.clip = a.clip.GetNext()

@@ -66,7 +66,9 @@ func (v vectorUtil) DistanceV3(point1 sf.Vector3f, point2 sf.Vector3f) (output f
 	err = nil
 	return
 }
-
+func (v *vectorUtil) LerpFloat32(value1 float32, value2 float32, lerp float32) float32 {
+	return lerpV1(value1, value2, lerp)
+}
 func (v vectorUtil) LerpV1(point1 interface{}, point2 interface{}, lerp float32) (output float32, err error) {
 	output = 0
 	value1 := 0.0
