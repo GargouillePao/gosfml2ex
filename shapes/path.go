@@ -2,6 +2,7 @@ package shapes
 
 import (
 	sf "bitbucket.org/krepa098/gosfml2"
+	"errors"
 	sfutils "github.com/GargouillePao/gosfml2ex/utils"
 )
 
@@ -22,10 +23,45 @@ type PathShape struct {
 	step  float32
 }
 
-func NewPathShap(step float32) *PathShape {
+func NewPathShape(step float32) *PathShape {
 	pathShap := &PathShape{step: step}
 	pathShap.PrimitiveType = sf.PrimitiveLinesStrip
 	return pathShap
+}
+
+func NewFunctionalPathShape32(start float32, end float32, space float32, function func(float32) float32, color sf.Color) (*PathShape, error) {
+	if space <= 0 {
+		return nil, errors.New("Space must larger than 0")
+	}
+	if end < start {
+		return nil, errors.New("End must larger than start")
+	}
+	pathShape := NewPathShape(float32(1 + int(space*5)))
+	index := 0
+	for i := start; i < end; i += space {
+		pathShape.SetCtrl(index, sf.Vertex{
+			Position: sf.Vector2f{i, function(i)},
+			Color:    color,
+		})
+		index++
+	}
+	pathShape.SetEndCtrl(index, sf.Vertex{
+		Position: sf.Vector2f{end, function(end)},
+		Color:    color,
+	})
+	pathShape.AllToCurve()
+	return pathShape, nil
+
+}
+func NewFunctionalPathShape64(start float32, end float32, space float32, function func(float64) float64, color sf.Color) (*PathShape, error) {
+	function32 := func(x float32) float32 {
+		return float32(function(float64(x)))
+	}
+	return NewFunctionalPathShape32(start, end, space, function32, color)
+}
+
+func NewSimpleFunctionalPathShape(start float32, end float32, function func(float64) float64) (*PathShape, error) {
+	return NewFunctionalPathShape64(start, end, 1, function, sf.ColorRed())
 }
 
 func (p *PathShape) SetCtrl(index int, vertex sf.Vertex) {
@@ -57,6 +93,23 @@ func (p *PathShape) SetEndCtrl(index int, vertex sf.Vertex) {
 	}
 }
 
+func (p *PathShape) SetPosition(position sf.Vector2f) {
+	transform := sf.TransformIdentity()
+	transform.Translate(position.X, position.Y)
+	for i := 0; i < len(p.ctrls); i++ {
+		p.ctrls[i].point = transform.TransformPoint(p.ctrls[i].point)
+	}
+	p.AllToCurve()
+}
+func (p *PathShape) SetRotation(angle float32) {
+	transform := sf.TransformIdentity()
+	transform.RotateWithCenter(angle, p.ctrls[0].point.X, p.ctrls[0].point.Y)
+	for i := 0; i < len(p.ctrls); i++ {
+		p.ctrls[i].point = transform.TransformPoint(p.ctrls[i].point)
+	}
+	p.AllToCurve()
+}
+
 func (p *PathShape) AllToCurve() {
 	for i := 0; i < len(p.ctrls); i++ {
 		p.toCurve(i)
@@ -65,10 +118,22 @@ func (p *PathShape) AllToCurve() {
 
 func (p *PathShape) toCurve(index int) {
 	ctrlLen := len(p.ctrls)
-	index1 := (index - 1 + ctrlLen) % ctrlLen
-	index2 := index
-	index3 := (index + 1) % ctrlLen
-	index4 := (index + 2) % ctrlLen
+	index1 := 0
+	index2 := 0
+	index3 := 0
+	index4 := 0
+	if index == 0 {
+		index1 = 0
+		index2 = 0
+		index3 = 1
+		index4 = 2
+	} else {
+		index1 = index - 1
+		index2 = index
+		index3 = (index + 1) % ctrlLen
+		index4 = (index + 2) % ctrlLen
+	}
+
 	lever1, err := p.GetCtrl(index1)
 	if err != nil {
 		return
