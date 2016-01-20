@@ -55,8 +55,12 @@ func (v vectorUtil) DistanceV2(point1 interface{}, point2 interface{}) (output f
 	if err != nil {
 		return
 	}
-	vector := value2.Minus(value1)
-	output = float32(math.Sqrt(math.Pow(float64(vector.X), 2) + math.Pow(float64(vector.X), 2)))
+	output = v.DistanceV2f(value1, value2)
+	return
+}
+func (v vectorUtil) DistanceV2f(point1, point2 sf.Vector2f) (output float32) {
+	vector := point2.Minus(point1)
+	output = float32(math.Sqrt(math.Pow(float64(vector.X), 2) + math.Pow(float64(vector.Y), 2)))
 	return
 }
 

@@ -31,6 +31,9 @@ func (m mathUtil) QuardraticY(num float32, centerX float32, centerY float32, rad
 	a := -1 * b / ((radiusX - t) * (radiusX - t))
 	return a*(num-t)*(num-t) + b
 }
+func (m mathUtil) Sin(num float32, offSetX, rangeX float32) float32 {
+	return float32(math.Sin(math.Pi * float64((offSetX+num)*rangeX)))
+}
 func (m mathUtil) SymmetricY(num float32, slope float32, centerX float32) float32 {
 	return float32(math.Abs(float64((num - centerX) * slope)))
 }
