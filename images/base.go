@@ -9,14 +9,16 @@ import (
 	"image/png"
 	"os"
 	"strings"
+	"fmt"
 )
 
 func DecodeImage(fileName string) (img image.Image, err error) {
 	file, err := os.Open(fileName)
 	if err != nil {
+		fmt.Println(err)
 		return
 	}
-	suffixName := strings.ToLower(fileName[strings.Index(fileName, ".")+1:])
+	suffixName := strings.ToLower(fileName[strings.LastIndex(fileName, ".")+1:])
 	switch suffixName {
 	case "jpg":
 		img, err = jpeg.Decode(file)
@@ -32,6 +34,9 @@ func DecodeImage(fileName string) (img image.Image, err error) {
 func ReadImage(fileName string, x, y, width, height int) (imageGot *image.RGBA, point image.Point, err error) {
 
 	imgSrc, err := DecodeImage(fileName)
+	if(err!=nil){
+		return
+	}
 
 	rect := image.Rect(x, y, x+width, y+height)
 	imageGot = image.NewRGBA(rect)

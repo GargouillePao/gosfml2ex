@@ -23,7 +23,11 @@ func main() {
 
 	round, err := sf.NewCircleShape()
 
-	imageGot, _, err := images.ReadImage("011.jpg", -50, -50, 600, 600)
+	imageGot, _, err := images.ReadImage("D:/NewGoProject/src/github.com/GargouillePao/gosfml2ex/sample/image/011.jpg", -50, -50, 600, 600)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	imageGot__ := images.ImageEnhanceRGBWithFunc(imageGot, func(r, g, b float32) (outr, outg, outb float32) {
 		outr = 127 * float32(math.Sin(float64(r-127)/255*math.Pi+1))
 		outg = g
