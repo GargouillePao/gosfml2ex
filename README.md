@@ -7,4 +7,4 @@ go get -u github.com/GargouillePao/gosfml2ex
 
 ## Usage
 
-just see the [demo](https://github.com/GargouillePao/gosfml2ex/blob/master/sample/main.go) 
+just see the [demo](https://github.com/GargouillePao/gosfml2ex/blob/master/sample)
