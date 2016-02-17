@@ -5,8 +5,8 @@ import (
 	"time"
 )
 
-var Vector = sfutils.Utils().Vector
-var Slice = sfutils.Utils().Slice
+var Vector = sfutils.Utils.Vector
+var Slice = sfutils.Utils.Slice
 
 type Animation struct {
 	clip     AnimationClip

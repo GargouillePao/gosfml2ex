@@ -23,7 +23,7 @@ func main() {
 
 	round, err := sf.NewCircleShape()
 
-	imageGot, _, err := images.ReadImage("D:/NewGoProject/src/github.com/GargouillePao/gosfml2ex/sample/image/011.jpg", -50, -50, 600, 600)
+	imageGot, _, err := images.ReadImage("./sample/image/011.jpg", -50, -50, 600, 600)
 	if err != nil {
 		fmt.Println(err)
 		return

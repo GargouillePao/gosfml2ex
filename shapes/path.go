@@ -6,9 +6,9 @@ import (
 	sfutils "github.com/GargouillePao/gosfml2ex/utils"
 )
 
-var Errors = sfutils.Errors()
-var Vector = sfutils.Utils().Vector
-var Grapics = sfutils.Utils().Graphics
+var Errors = sfutils.Errors
+var Vector = sfutils.Utils.Vector
+var Grapics = sfutils.Utils.Graphics
 
 type PathVertexts interface {
 	GetVertextNormal(index int) (sf.Vector2f, error)

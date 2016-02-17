@@ -115,12 +115,12 @@ func (v vectorUtil) LerpV3(point1 interface{}, point2 interface{}, lerp float32)
 	var ok bool
 	value1, ok = point1.(sf.Vector3f)
 	if !ok {
-		err = NewError(Errors().CannotMius)
+		err = NewError(Errors.CannotMius)
 		return
 	}
 	value2, ok = point2.(sf.Vector3f)
 	if !ok {
-		err = NewError(Errors().NotTheSameType)
+		err = NewError(Errors.NotTheSameType)
 		return
 	}
 	output = sf.Vector3f{
@@ -137,12 +137,12 @@ func (v vectorUtil) LerpV4(point1 interface{}, point2 interface{}, lerp float32)
 	var ok bool
 	value1, ok = point1.(sf.Color)
 	if !ok {
-		err = NewError(Errors().CannotMius)
+		err = NewError(Errors.CannotMius)
 		return
 	}
 	value2, ok = point2.(sf.Color)
 	if !ok {
-		err = NewError(Errors().NotTheSameType)
+		err = NewError(Errors.NotTheSameType)
 		return
 	}
 	output = sf.Color{
@@ -199,7 +199,7 @@ func (v *vectorUtil) JudageDimension(value interface{}) uint8 {
 
 func toFloat64(point interface{}) (output float64, err error) {
 	if point == nil {
-		err = NewError(Errors().NotTheSameType)
+		err = NewError(Errors.NotTheSameType)
 		return
 	}
 	switch value := point.(type) {
@@ -214,13 +214,13 @@ func toFloat64(point interface{}) (output float64, err error) {
 	case float64:
 		output = value
 	default:
-		err = NewError(Errors().CannotMius)
+		err = NewError(Errors.CannotMius)
 	}
 	return
 }
 func toVector2f(point interface{}) (output sf.Vector2f, err error) {
 	if point == nil {
-		err = NewError(Errors().NilAttribute)
+		err = NewError(Errors.NilAttribute)
 		return
 	}
 	switch value := point.(type) {
@@ -231,7 +231,7 @@ func toVector2f(point interface{}) (output sf.Vector2f, err error) {
 	case sf.Vector2u:
 		output = sf.Vector2f{float32(value.X), float32(value.Y)}
 	default:
-		err = NewError(Errors().CannotMius)
+		err = NewError(Errors.CannotMius)
 	}
 	return
 }

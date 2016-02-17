@@ -11,13 +11,18 @@ type util struct {
 	Slice    sliceUtil
 }
 
-func Utils() util {
-	return util{
-		Math:     mathUtil{},
-		Vector:   vectorUtil{},
-		Graphics: graphicsUtil{},
-		Slice:    sliceUtil{},
-	}
+var Utils util = util{
+	Math:     mathUtil{},
+	Vector:   vectorUtil{},
+	Graphics: graphicsUtil{},
+	Slice:    sliceUtil{},
+}
+
+var Errors errors = errors{
+	NotTheSameType: "NotTheSameTypeError",
+	CannotMius:     "CannotMiusError",
+	NilAttribute:   "NilAttributeError",
+	OutOfRange:     "OutOfRangeError",
 }
 
 type errors struct {
@@ -25,15 +30,6 @@ type errors struct {
 	CannotMius     string
 	NilAttribute   string
 	OutOfRange     string
-}
-
-func Errors() errors {
-	return errors{
-		NotTheSameType: "NotTheSameTypeError",
-		CannotMius:     "CannotMiusError",
-		NilAttribute:   "NilAttributeError",
-		OutOfRange:     "OutOfRangeError",
-	}
 }
 
 type errorUtil struct {

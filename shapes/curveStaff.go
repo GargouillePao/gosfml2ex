@@ -6,7 +6,7 @@ import (
 	"math"
 )
 
-var sfUtil = sfutils.Utils()
+var sfUtil = sfutils.Utils
 
 type CurveConvexShape struct {
 	sf.ConvexShape

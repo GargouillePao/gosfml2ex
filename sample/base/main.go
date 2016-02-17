@@ -5,11 +5,8 @@ import (
 	"runtime"
 	"sfmlex/animations"
 	shapeEX "sfmlex/shapes"
-	sfUtil "sfmlex/utils"
 	"time"
 )
-
-var vectorUtil = sfUtil.Utils().Vector
 
 func init() {
 	runtime.LockOSThread()

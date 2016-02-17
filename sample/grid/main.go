@@ -14,7 +14,7 @@ func init() {
 	runtime.LockOSThread()
 }
 
-var mathUtil = sfUtil.Utils().Math
+var mathUtil = sfUtil.Utils.Math
 
 func main() {
 	ticker := time.NewTicker(time.Second / 30)
@@ -24,7 +24,7 @@ func main() {
 
 	grid, err := shapes.NewGirdShape(sf.Vector2f{500, 400}, sf.Vector2f{50, 40}, sf.ColorWhite())
 
-	imageGot, _, err := images.ReadImage("011.jpg", 0, 0, 500, 400)
+	imageGot, _, err := images.ReadImage("./sample/image/011.jpg", 0, 0, 500, 400)
 	texture, err := images.ReadTextureFromImage(*imageGot)
 	if err != nil {
 		fmt.Println(err)
