@@ -7,7 +7,7 @@ import (
 type sliceUtil struct {
 }
 
-func (s *sliceUtil) Equilongf(slice1 *[]float32, slice2 *[]float32) {
+func (s sliceUtil) Equilongf(slice1 *[]float32, slice2 *[]float32) {
 	len1 := len(*slice1)
 	len2 := len(*slice2)
 	if len1 == len2 {
@@ -29,8 +29,7 @@ func (s *sliceUtil) Equilongf(slice1 *[]float32, slice2 *[]float32) {
 		}
 	}
 }
-
-func (s *sliceUtil) Lerpf(slice1 []float32, slice2 []float32, lerp float32) []float32 {
+func (s sliceUtil) Lerpf(slice1 []float32, slice2 []float32, lerp float32) []float32 {
 	length := len(slice1)
 	if length != len(slice2) {
 		return nil
@@ -41,14 +40,13 @@ func (s *sliceUtil) Lerpf(slice1 []float32, slice2 []float32, lerp float32) []fl
 	}
 	return slice
 }
-
-func (s *sliceUtil) ToVector1(slice []float32) float32 {
+func (s sliceUtil) ToVector1(slice []float32) float32 {
 	if len(slice) > 0 {
 		return slice[0]
 	}
 	return 0
 }
-func (s *sliceUtil) ToVector2(slice []float32) sf.Vector2f {
+func (s sliceUtil) ToVector2(slice []float32) sf.Vector2f {
 	switch len(slice) {
 	case 0:
 		return sf.Vector2f{0, 0}
@@ -58,7 +56,7 @@ func (s *sliceUtil) ToVector2(slice []float32) sf.Vector2f {
 		return sf.Vector2f{slice[0], slice[1]}
 	}
 }
-func (s *sliceUtil) ToVector3(slice []float32) sf.Vector3f {
+func (s sliceUtil) ToVector3(slice []float32) sf.Vector3f {
 	switch len(slice) {
 	case 0:
 		return sf.Vector3f{0, 0, 0}
@@ -70,7 +68,7 @@ func (s *sliceUtil) ToVector3(slice []float32) sf.Vector3f {
 		return sf.Vector3f{slice[0], slice[1], slice[2]}
 	}
 }
-func (s *sliceUtil) ToVector4(slice []float32) sf.Color {
+func (s sliceUtil) ToVector4(slice []float32) sf.Color {
 	switch len(slice) {
 	case 0:
 		return sf.Color{0, 0, 0, 0}

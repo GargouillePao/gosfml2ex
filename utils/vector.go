@@ -24,7 +24,6 @@ func (v vectorUtil) MultiplyV3(point sf.Vector3f, num float32) sf.Vector3f {
 	point.Z *= num
 	return point
 }
-
 func (v vectorUtil) DistanceV1(point1 interface{}, point2 interface{}) (output float32, err error) {
 	output = 0
 	value1 := 0.0
@@ -42,7 +41,6 @@ func (v vectorUtil) DistanceV1(point1 interface{}, point2 interface{}) (output f
 	output = float32(math.Abs(value1 - value2))
 	return
 }
-
 func (v vectorUtil) DistanceV2(point1 interface{}, point2 interface{}) (output float32, err error) {
 	output = 0
 	var value1 sf.Vector2f
@@ -63,7 +61,6 @@ func (v vectorUtil) DistanceV2f(point1, point2 sf.Vector2f) (output float32) {
 	output = float32(math.Sqrt(math.Pow(float64(vector.X), 2) + math.Pow(float64(vector.Y), 2)))
 	return
 }
-
 func (v vectorUtil) DistanceV3(point1 sf.Vector3f, point2 sf.Vector3f) (output float32, err error) {
 	vector := sf.Vector3f{X: point1.X - point2.X, Y: point1.Y - point2.Y, Z: point1.Z - point2.Z}
 	output = float32(math.Sqrt(math.Pow(float64(vector.X), 2) + math.Pow(float64(vector.X), 2) + math.Pow(float64(vector.Z), 2)))
@@ -90,7 +87,6 @@ func (v vectorUtil) LerpV1(point1 interface{}, point2 interface{}, lerp float32)
 	output = lerpV1(float32(value1), float32(value2), lerp)
 	return
 }
-
 func (v vectorUtil) LerpV2(point1 interface{}, point2 interface{}, lerp float32) (output sf.Vector2f, err error) {
 	var value1 sf.Vector2f
 	var value2 sf.Vector2f
@@ -108,7 +104,6 @@ func (v vectorUtil) LerpV2(point1 interface{}, point2 interface{}, lerp float32)
 	}
 	return
 }
-
 func (v vectorUtil) LerpV3(point1 interface{}, point2 interface{}, lerp float32) (output sf.Vector3f, err error) {
 	var value1 sf.Vector3f
 	var value2 sf.Vector3f
@@ -130,7 +125,6 @@ func (v vectorUtil) LerpV3(point1 interface{}, point2 interface{}, lerp float32)
 	}
 	return
 }
-
 func (v vectorUtil) LerpV4(point1 interface{}, point2 interface{}, lerp float32) (output sf.Color, err error) {
 	var value1 sf.Color
 	var value2 sf.Color
@@ -156,7 +150,6 @@ func (v vectorUtil) LerpV4(point1 interface{}, point2 interface{}, lerp float32)
 func lerpV1UInt8(value1 uint8, value2 uint8, lerp float32) uint8 {
 	return uint8(float32(value1)*(1-lerp) + float32(value2)*lerp)
 }
-
 func lerpV1(value1 float32, value2 float32, lerp float32) float32 {
 	return value1*(1-lerp) + value2*lerp
 }
@@ -167,7 +160,6 @@ func (v vectorUtil) LerpV2f(point1 sf.Vector2f, point2 sf.Vector2f, lerp float32
 	}
 	return
 }
-
 func isV1(value interface{}) bool {
 	if _, err := toFloat64(value); err != nil {
 		return false
@@ -180,7 +172,6 @@ func isV2(value interface{}) bool {
 	}
 	return true
 }
-
 func (v *vectorUtil) JudageDimension(value interface{}) uint8 {
 	if isV1(value) {
 		return 1
@@ -196,7 +187,6 @@ func (v *vectorUtil) JudageDimension(value interface{}) uint8 {
 	}
 	return 0
 }
-
 func toFloat64(point interface{}) (output float64, err error) {
 	if point == nil {
 		err = NewError(Errors.NotTheSameType)

@@ -29,7 +29,7 @@ func (g graphicsUtil) BCurve(ctrlPoints []sf.Vector2f, t float32) (point sf.Vect
 	}
 	return
 }
-func (g *graphicsUtil) BezierCurve(ctrlPoints []sf.Vector2f, t float32) (point sf.Vector2f) {
+func (g graphicsUtil) BezierCurve(ctrlPoints []sf.Vector2f, t float32) (point sf.Vector2f) {
 	n := len(ctrlPoints)
 	switch n {
 	case 0:
